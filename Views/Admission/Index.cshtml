@@ -1,0 +1,43 @@
+@model IEnumerable<AdmissionWeb.Models.Entities.AdmissionPeriod>
+@{
+    ViewData["Title"] = "Danh sách kỳ tuyển sinh";
+}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Kỳ tuyển sinh</li>
+  </ol>
+</nav>
+
+<h2 class="mb-4">Các kỳ tuyển sinh đang diễn ra</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title text-primary">@item.Name</h4>
+                    <p class="card-text">@item.Description</p>
+                    <div class="row small mb-3">
+                        <div class="col-6">
+                            <strong><i class="fas fa-clock"></i> Bắt đầu:</strong><br />
+                            @item.StartDate.ToString("dd/MM/yyyy")
+                        </div>
+                        <div class="col-6">
+                            <strong><i class="fas fa-hourglass-end"></i> Kết thúc:</strong><br />
+                            @item.EndDate.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0 pb-3">
+                    <div class="d-grid gap-2">
+                        <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-primary">Xem chi tiết & Chỉ tiêu</a>
+                        <a asp-controller="Application" asp-action="Register" asp-route-periodId="@item.Id" class="btn btn-primary">Đăng ký hồ sơ trực tuyến</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

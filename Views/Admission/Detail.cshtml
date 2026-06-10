@@ -1,0 +1,100 @@
+@model AdmissionWeb.Models.ViewModels.AdmissionDetailViewModel
+@{
+    ViewData["Title"] = "Chi tiết kỳ tuyển sinh - " + Model.Period.Name;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Admission" asp-action="Index">Kỳ tuyển sinh</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Chi tiết</li>
+    </ol>
+</nav>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0"><i class="fas fa-graduation-cap"></i> @Model.Period.Name</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <p class="lead">@Model.Period.Description</p>
+            </div>
+            <div class="col-md-4">
+                <div class="bg-light p-3 rounded">
+                    <p class="mb-2"><strong><i class="fas fa-calendar-alt text-primary"></i> Năm học:</strong> @Model.Period.Year</p>
+                    <p class="mb-2"><strong><i class="fas fa-clock text-success"></i> Bắt đầu:</strong> @Model.Period.StartDate.ToString("dd/MM/yyyy")</p>
+                    <p class="mb-2"><strong><i class="fas fa-hourglass-end text-danger"></i> Kết thúc:</strong> @Model.Period.EndDate.ToString("dd/MM/yyyy")</p>
+                    <p class="mb-0">
+                        <strong>Trạng thái:</strong>
+                        @if (Model.Period.IsActive && Model.Period.EndDate >= DateTime.Now)
+                        {
+                            <span class="badge bg-success"><i class="fas fa-check-circle"></i> Đang mở</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary"><i class="fas fa-times-circle"></i> Đã đóng</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-info text-white">
+        <h4 class="mb-0"><i class="fas fa-list-ul"></i> Chỉ tiêu tuyển sinh theo ngành/lớp</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã ngành</th>
+                        <th>Tên ngành/lớp</th>
+                        <th>Loại</th>
+                        <th class="text-center">Chỉ tiêu</th>
+                        <th>Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var opt in Model.Options)
+                    {
+                        <tr>
+                            <td><strong>@opt.Code</strong></td>
+                            <td>@opt.Name</td>
+                            <td>
+                                @if (opt.IsSpecialized)
+                                {
+                                    <span class="badge bg-warning text-dark"><i class="fas fa-star"></i> Chuyên</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Cơ bản</span>
+                                }
+                            </td>
+                            <td class="text-center"><strong class="text-primary fs-5">@opt.Quota</strong></td>
+                            <td class="text-muted">@(opt.Description ?? "—")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    @if (Model.Period.IsActive && Model.Period.EndDate >= DateTime.Now)
+    {
+        <a asp-controller="Application" asp-action="Register" asp-route-periodId="@Model.Period.Id" class="btn btn-success btn-lg px-5">
+            <i class="fas fa-paper-plane"></i> Đăng ký hồ sơ trực tuyến ngay
+        </a>
+    }
+    else
+    {
+        <div class="alert alert-warning d-inline-block">
+            <i class="fas fa-exclamation-triangle"></i> Kỳ tuyển sinh này đã kết thúc nhận hồ sơ.
+        </div>
+    }
+</div>

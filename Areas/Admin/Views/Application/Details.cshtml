@@ -1,0 +1,176 @@
+@model AdmissionWeb.Models.Entities.Application
+@{
+    ViewData["Title"] = "Chi tiết hồ sơ";
+}
+
+<h3 class="mb-4"><i class="fas fa-file-alt me-2"></i>Chi tiết hồ sơ: @Model.ApplicationCode</h3>
+
+<div class="row">
+    <!-- Applicant Info -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin thí sinh</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tr>
+                        <th style="width:40%">Họ và tên:</th>
+                        <td>@Model.FullName</td>
+                    </tr>
+                    <tr>
+                        <th>Ngày sinh:</th>
+                        <td>@Model.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                    <tr>
+                        <th>Giới tính:</th>
+                        <td>@Model.Gender</td>
+                    </tr>
+                    <tr>
+                        <th>Số CCCD:</th>
+                        <td>@Model.IDNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Số điện thoại:</th>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <th>Địa chỉ:</th>
+                        <td>@Model.Address</td>
+                    </tr>
+                    <tr>
+                        <th>Trường THCS:</th>
+                        <td>@Model.PreviousSchool</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admission Info -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>Thông tin tuyển sinh</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless mb-0">
+                    <tr>
+                        <th style="width:40%">Đợt tuyển sinh:</th>
+                        <td>@Model.AdmissionPeriod?.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Nguyện vọng:</th>
+                        <td>@Model.ProgramOption?.Name</td>
+                    </tr>
+                    <tr>
+                        <th>Mã hồ sơ:</th>
+                        <td><strong>@Model.ApplicationCode</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Ngày nộp:</th>
+                        <td>@Model.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                    <tr>
+                        <th>Trạng thái:</th>
+                        <td>
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    @:<span class="badge bg-warning text-dark fs-6">Chờ duyệt</span>
+                                    break;
+                                case "Approved":
+                                    @:<span class="badge bg-success fs-6">Đã duyệt</span>
+                                    break;
+                                case "Rejected":
+                                    @:<span class="badge bg-danger fs-6">Từ chối</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+                    @if (!string.IsNullOrEmpty(Model.RejectionReason))
+                    {
+                        <tr>
+                            <th>Lý do từ chối:</th>
+                            <td class="text-danger">@Model.RejectionReason</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Exam Results -->
+@if (Model.ExamResults != null && Model.ExamResults.Any())
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Kết quả thi</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Môn thi</th>
+                            <th>Điểm số</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var stt = 1; }
+                        @foreach (var result in Model.ExamResults)
+                        {
+                            <tr>
+                                <td>@(stt++)</td>
+                                <td>@result.SubjectName</td>
+                                <td><strong>@result.Score.ToString("F1")</strong></td>
+                                <td>@result.Remarks</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Update Status Form -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Cập nhật trạng thái</h5>
+    </div>
+    <div class="card-body">
+        <form asp-area="Admin" asp-controller="Application" asp-action="UpdateStatus" asp-route-id="@Model.Id" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="status" class="form-label fw-semibold">Trạng thái</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="Pending" selected="@(Model.Status == "Pending")">Chờ duyệt</option>
+                        <option value="Approved" selected="@(Model.Status == "Approved")">Đã duyệt</option>
+                        <option value="Rejected" selected="@(Model.Status == "Rejected")">Từ chối</option>
+                    </select>
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label for="reason" class="form-label fw-semibold">Lý do từ chối (nếu có)</label>
+                    <textarea name="reason" id="reason" class="form-control" rows="3" placeholder="Nhập lý do từ chối hồ sơ...">@Model.RejectionReason</textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>Cập nhật
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Back Button -->
+<a asp-area="Admin" asp-controller="Application" asp-action="Index" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-1"></i>Quay lại danh sách
+</a>

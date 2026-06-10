@@ -1,0 +1,93 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white p-4 position-relative">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="opacity: 0.1; pointer-events: none;">
+                        <svg viewBox="0 0 100 100" class="w-100 h-100" preserveAspectRatio="none">
+                            <polygon points="0,0 100,0 50,100" fill="#ffffff"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="d-flex align-items-center position-relative z-index-1">
+                        <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-0 fw-bold">@ViewData["Title"]</h3>
+                            <p class="mb-0 text-white-50">Cập nhật thông tin cá nhân của bạn</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <partial name="_StatusMessage" for="StatusMessage" />
+                    <form id="profile-form" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fw-bold" role="alert"></div>
+                        
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Username" class="form-control rounded-3 bg-light" placeholder="Username" disabled />
+                                    <label asp-for="Username" class="text-muted"><i class="fas fa-at me-2"></i>Tên đăng nhập</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input asp-for="Input.PhoneNumber" class="form-control rounded-3 border-primary-subtle shadow-sm" placeholder="Phone" />
+                                    <label asp-for="Input.PhoneNumber" class="text-muted"><i class="fas fa-phone me-2"></i>Số điện thoại</label>
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <input asp-for="Input.FullName" class="form-control rounded-3 border-primary-subtle shadow-sm" placeholder="Họ và tên" />
+                            <label asp-for="Input.FullName" class="text-muted"><i class="fas fa-id-card me-2"></i>Họ và tên</label>
+                            <span asp-validation-for="Input.FullName" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            <textarea asp-for="Input.Address" class="form-control rounded-3 border-primary-subtle shadow-sm" style="height: 100px" placeholder="Địa chỉ"></textarea>
+                            <label asp-for="Input.Address" class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>Địa chỉ</label>
+                            <span asp-validation-for="Input.Address" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill fw-bold px-4 me-2">Hủy</a>
+                            <button id="update-profile-button" type="submit" class="btn btn-primary rounded-pill fw-bold shadow-sm transition-hover px-5">
+                                <i class="fas fa-save me-2"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <style>
+        .transition-hover {
+            transition: all 0.3s ease;
+        }
+        .transition-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        .border-primary-subtle {
+            border-color: rgba(13, 110, 253, 0.25) !important;
+        }
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+}

@@ -1,0 +1,86 @@
+@model IEnumerable<AdmissionWeb.Models.Entities.Application>
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Hồ sơ của tôi</li>
+    </ol>
+</nav>
+
+<h2 class="mb-4"><i class="fas fa-folder-open text-primary"></i> Hồ sơ đăng ký của tôi</h2>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var app in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                        <strong class="text-primary"><i class="fas fa-file-alt"></i> @app.ApplicationCode</strong>
+                        @switch (app.Status)
+                        {
+                            case "Pending":
+                                @:<span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Đang chờ duyệt</span>
+                                break;
+                            case "Approved":
+                                @:<span class="badge bg-success"><i class="fas fa-check-circle"></i> Đã duyệt</span>
+                                break;
+                            case "Rejected":
+                                @:<span class="badge bg-danger"><i class="fas fa-times-circle"></i> Từ chối</span>
+                                break;
+                            default:
+                                @:<span class="badge bg-secondary">@app.Status</span>
+                                break;
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted">Họ và tên:</div>
+                            <div class="col-7 fw-bold text-uppercase">@app.FullName</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted">Kỳ tuyển sinh:</div>
+                            <div class="col-7">@app.AdmissionPeriod?.Name</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted">Nguyện vọng:</div>
+                            <div class="col-7">@app.ProgramOption?.Name</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 text-muted">Ngày nộp:</div>
+                            <div class="col-7">@app.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        </div>
+                        @if (app.Status == "Rejected" && !string.IsNullOrEmpty(app.RejectionReason))
+                        {
+                            <div class="alert alert-danger small mt-2 mb-0">
+                                <i class="fas fa-exclamation-triangle"></i> <strong>Lý do từ chối:</strong> @app.RejectionReason
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a asp-controller="Application" asp-action="Status" asp-route-code="@app.ApplicationCode" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-search"></i> Xem chi tiết & kết quả
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-inbox fa-4x text-muted"></i>
+        </div>
+        <h4 class="text-muted">Bạn chưa nộp hồ sơ nào</h4>
+        <p class="text-muted">Hãy đăng ký hồ sơ tuyển sinh để bắt đầu.</p>
+        <a asp-controller="Admission" asp-action="Index" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus-circle"></i> Xem kỳ tuyển sinh & Đăng ký
+        </a>
+    </div>
+}

@@ -1,0 +1,129 @@
+@model AdmissionWeb.Models.ViewModels.ResultSearchViewModel
+@{
+    ViewData["Title"] = "Trạng thái hồ sơ";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Trạng thái hồ sơ</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <h2 class="mb-0"><i class="fas fa-search"></i> Tra Cứu Trạng Thái Hồ Sơ</h2>
+            </div>
+            <div class="card-body p-5">
+                <form asp-controller="Application" asp-action="Status" method="get" class="mb-4">
+                    <div class="input-group input-group-lg">
+                        <input type="text" name="code" class="form-control" placeholder="Nhập Mã hồ sơ..." value="@Model.SearchTerm">
+                        <button class="btn btn-primary px-4" type="submit"><i class="fas fa-search"></i> Tra cứu</button>
+                    </div>
+                </form>
+
+                @if (Model.IsSearched)
+                {
+                    if (Model.Application != null)
+                    {
+                        <div class="result-box p-4 bg-light rounded border">
+                            <h4 class="text-center text-primary mb-4"><i class="fas fa-clipboard-check"></i> Thông Tin Hồ Sơ</h4>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 fw-bold">Mã hồ sơ:</div>
+                                <div class="col-sm-8"><strong class="text-primary">@Model.Application.ApplicationCode</strong></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 fw-bold">Họ và tên:</div>
+                                <div class="col-sm-8 text-uppercase">@Model.Application.FullName</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 fw-bold">Kỳ tuyển sinh:</div>
+                                <div class="col-sm-8">@Model.Application.AdmissionPeriod?.Name</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 fw-bold">Nguyện vọng:</div>
+                                <div class="col-sm-8">@Model.Application.ProgramOption?.Name</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 fw-bold">Ngày nộp:</div>
+                                <div class="col-sm-8">@Model.Application.SubmittedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-4 fw-bold">Trạng thái:</div>
+                                <div class="col-sm-8">
+                                    @switch (Model.Application.Status)
+                                    {
+                                        case "Pending":
+                                            @:<span class="badge bg-warning text-dark fs-6"><i class="fas fa-clock"></i> Đang chờ duyệt</span>
+                                            break;
+                                        case "Approved":
+                                            @:<span class="badge bg-success fs-6"><i class="fas fa-check-circle"></i> Đã duyệt hồ sơ</span>
+                                            break;
+                                        case "Rejected":
+                                            @:<span class="badge bg-danger fs-6"><i class="fas fa-times-circle"></i> Từ chối hồ sơ</span>
+                                            break;
+                                        default:
+                                            @:<span class="badge bg-secondary fs-6">@Model.Application.Status</span>
+                                            break;
+                                    }
+                                </div>
+                            </div>
+
+                            @if (Model.Application.Status == "Rejected" && !string.IsNullOrEmpty(Model.Application.RejectionReason))
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle"></i> <strong>Lý do từ chối:</strong> @Model.Application.RejectionReason
+                                </div>
+                            }
+
+                            @if (Model.Application.ExamResults != null && Model.Application.ExamResults.Any())
+                            {
+                                <div class="mt-4">
+                                    <h5 class="border-bottom pb-2"><i class="fas fa-chart-bar text-success"></i> Điểm thi các môn:</h5>
+                                    <table class="table table-bordered bg-white">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Môn thi</th>
+                                                <th class="text-center">Điểm số</th>
+                                                <th>Ghi chú</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var res in Model.Application.ExamResults)
+                                            {
+                                                <tr>
+                                                    <td>@res.SubjectName</td>
+                                                    <td class="text-center fw-bold text-danger fs-5">@res.Score</td>
+                                                    <td>@res.Remarks</td>
+                                                </tr>
+                                            }
+                                            <tr class="table-info">
+                                                <td class="fw-bold">Tổng điểm</td>
+                                                <td class="text-center fw-bold text-primary fs-5">@Model.Application.ExamResults.Sum(r => r.Score)</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else if (Model.Application.Status == "Approved")
+                            {
+                                <div class="alert alert-info mt-4">
+                                    <i class="fas fa-info-circle"></i> Hồ sơ đã được duyệt, điểm thi sẽ được cập nhật sau khi có kết quả chính thức.
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger text-center">
+                            <i class="fas fa-exclamation-triangle"></i> Không tìm thấy hồ sơ nào với mã "<strong>@Model.SearchTerm</strong>". Vui lòng kiểm tra lại.
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

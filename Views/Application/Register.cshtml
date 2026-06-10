@@ -1,0 +1,96 @@
+@model AdmissionWeb.Models.ViewModels.ApplicationFormViewModel
+@{
+    ViewData["Title"] = "Đăng ký hồ sơ - " + Model.PeriodName;
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Phiếu Đăng Ký Tuyển Sinh Trực Tuyến</h3>
+            <p class="mb-0 small">Kỳ tuyển sinh: @Model.PeriodName</p>
+        </div>
+        <div class="card-body">
+            <form asp-action="Submit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="AdmissionPeriodId" />
+                <input type="hidden" asp-for="Application.AdmissionPeriodId" value="@Model.AdmissionPeriodId" />
+
+                <h5 class="border-bottom pb-2 mb-3 text-info">1. Thông tin thí sinh</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Application.FullName" class="form-label"></label>
+                        <input asp-for="Application.FullName" class="form-control" placeholder="NGUYỄN VĂN A" />
+                        <span asp-validation-for="Application.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Application.DateOfBirth" class="form-label"></label>
+                        <input asp-for="Application.DateOfBirth" class="form-control" type="date" />
+                        <span asp-validation-for="Application.DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="Application.Gender" class="form-label"></label>
+                        <select asp-for="Application.Gender" class="form-select">
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label asp-for="Application.IDNumber" class="form-label"></label>
+                        <input asp-for="Application.IDNumber" class="form-control" />
+                        <span asp-validation-for="Application.IDNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Application.PhoneNumber" class="form-label"></label>
+                        <input asp-for="Application.PhoneNumber" class="form-control" />
+                        <span asp-validation-for="Application.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Application.Email" class="form-label"></label>
+                        <input asp-for="Application.Email" class="form-control" />
+                        <span asp-validation-for="Application.Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Application.Address" class="form-label"></label>
+                    <textarea asp-for="Application.Address" class="form-control" rows="2"></textarea>
+                </div>
+
+                <h5 class="border-bottom pb-2 mb-3 mt-4 text-info">2. Thông tin học tập & Đăng ký</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Application.PreviousSchool" class="form-label"></label>
+                        <input asp-for="Application.PreviousSchool" class="form-control" placeholder="Trường THCS..." />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Application.ProgramOptionId" class="form-label">Nguyện vọng đăng ký</label>
+                        <select asp-for="Application.ProgramOptionId" class="form-select">
+                            @foreach (var opt in Model.ProgramOptions)
+                            {
+                                <option value="@opt.Id">@opt.Name (@opt.Code)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Tài liệu đính kèm (CCCD, Học bạ - Nén thành 1 file .zip hoặc .pdf)</label>
+                    <input type="file" name="attachment" class="form-control" />
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a asp-controller="Admission" asp-action="Index" class="btn btn-secondary">Hủy bỏ</a>
+                    <button type="submit" class="btn btn-success btn-lg px-5">Gửi hồ sơ đăng ký</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

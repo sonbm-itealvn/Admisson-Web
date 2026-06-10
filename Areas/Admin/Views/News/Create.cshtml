@@ -1,0 +1,76 @@
+@model AdmissionWeb.Models.Entities.NewsArticle
+@{
+    ViewData["Title"] = "Thêm mới Tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3 class="mb-4"><i class="fas fa-plus-circle text-primary me-2"></i>Thêm mới Tin tức</h3>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h6 class="mb-0 fw-bold">Thông tin bài viết</h6>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-bold"></label>
+                <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề..." />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Category" class="form-label fw-bold"></label>
+                    <input asp-for="Category" class="form-control" placeholder="Ví dụ: Thông báo, Tuyển sinh..." />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Author" class="form-label fw-bold"></label>
+                    <input asp-for="Author" class="form-control" placeholder="Tên tác giả..." />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Hình ảnh bìa</label>
+                <input type="file" name="ImageUpload" accept="image/*" class="form-control" />
+                <small class="text-muted">Chọn ảnh từ máy tính của bạn. Bỏ trống nếu không muốn cập nhật ảnh.</small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label fw-bold"></label>
+                <textarea asp-for="Content" id="editor" class="form-control" rows="15" placeholder="Nhập nội dung bài viết..."></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4 form-check form-switch">
+                <input class="form-check-input" type="checkbox" asp-for="IsPublished" checked>
+                <label class="form-check-label" asp-for="IsPublished">Xuất bản bài viết</label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i> Lưu bài viết</button>
+                <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i> Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!-- CKEditor 5 CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+    </style>
+}

@@ -1,0 +1,58 @@
+@model AdmissionWeb.Models.Entities.NewsArticle
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none">Tin tức</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@Model.Title</li>
+                </ol>
+            </nav>
+
+            <div class="bg-white p-4 p-md-5 rounded shadow-sm border-0">
+                <div class="mb-4 pb-3 border-bottom">
+                    <span class="badge bg-primary-sharp px-3 py-2 mb-3">@Model.Category</span>
+                    <h1 class="fw-bold mb-3" style="line-height: 1.4;">@Model.Title</h1>
+                    <div class="d-flex align-items-center text-muted small">
+                        <div class="me-4"><i class="fas fa-calendar-alt me-2 text-primary"></i> @Model.PublishedAt.ToString("dd/MM/yyyy HH:mm")</div>
+                        @if (!string.IsNullOrEmpty(Model.Author))
+                        {
+                            <div><i class="fas fa-user-edit me-2 text-primary"></i> Đăng bởi: <span class="fw-bold">@Model.Author</span></div>
+                        }
+                    </div>
+                </div>
+
+                <div class="article-content" style="font-size: 1.1rem; line-height: 1.8;">
+                    @Html.Raw(Model.Content)
+                </div>
+
+                <div class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i> Trở về danh sách
+                    </a>
+                    
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 fw-bold text-muted">Chia sẻ:</span>
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2" style="width: 35px; height: 35px; padding: 5px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-info rounded-circle" style="width: 35px; height: 35px; padding: 5px;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+</style>

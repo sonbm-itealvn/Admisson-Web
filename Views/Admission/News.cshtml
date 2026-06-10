@@ -1,0 +1,46 @@
+@model AdmissionWeb.Models.Entities.NewsArticle
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Admission" asp-action="Index">Kỳ tuyển sinh</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <article class="card shadow-sm border-0">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" style="max-height: 400px; object-fit: cover;" />
+            }
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    @if (!string.IsNullOrEmpty(Model.Category))
+                    {
+                        <span class="badge bg-info me-2">@Model.Category</span>
+                    }
+                    <small class="text-muted">
+                        <i class="fas fa-user"></i> @Model.Author |
+                        <i class="fas fa-calendar"></i> @Model.PublishedAt.ToString("dd/MM/yyyy HH:mm")
+                    </small>
+                </div>
+
+                <h1 class="card-title mb-4">@Model.Title</h1>
+
+                <div class="card-text" style="line-height: 1.8; font-size: 1.05rem;">
+                    @Html.Raw(Model.Content.Replace("\n", "<br/>"))
+                </div>
+            </div>
+            <div class="card-footer bg-white border-top text-end">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </article>
+    </div>
+</div>
