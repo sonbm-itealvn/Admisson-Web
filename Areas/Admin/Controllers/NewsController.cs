@@ -41,8 +41,14 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NewsArticle article, IFormFile? ImageUpload)
         {
+            ModelState.Remove("ImageUrl");
+            if (string.IsNullOrEmpty(article.Author)) ModelState.Remove("Author");
+            if (string.IsNullOrEmpty(article.Category)) ModelState.Remove("Category");
+
             if (ModelState.IsValid)
             {
+                article.Author ??= "Quản trị viên";
+                article.Category ??= "Thông báo chung";
                 if (ImageUpload != null)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "news");
@@ -86,8 +92,14 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         {
             if (id != article.Id) return NotFound();
 
+            ModelState.Remove("ImageUrl");
+            if (string.IsNullOrEmpty(article.Author)) ModelState.Remove("Author");
+            if (string.IsNullOrEmpty(article.Category)) ModelState.Remove("Category");
+
             if (ModelState.IsValid)
             {
+                article.Author ??= "Quản trị viên";
+                article.Category ??= "Thông báo chung";
                 try
                 {
                     var existing = await _context.NewsArticles.FindAsync(id);

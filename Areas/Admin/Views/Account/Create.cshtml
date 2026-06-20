@@ -41,6 +41,11 @@
 
             <div class="row mb-4">
                 <div class="col-md-6">
+                    <label asp-for="Address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
                     <label asp-for="RoleName" class="form-label">Vai trò <span class="text-danger">*</span></label>
                     <select asp-for="RoleName" asp-items="ViewBag.Roles" class="form-select">
                         <option value="">-- Chọn vai trò --</option>

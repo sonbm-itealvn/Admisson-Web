@@ -27,45 +27,47 @@
         </div>
     </div>
 
-    <!-- Main Header -->
-    <header class="bg-white border-bottom sticky-top shadow-sm">
-        <div class="container py-3 d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <a class="navbar-brand d-flex align-items-center text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">
-                    <div class="logo-box">
-                        <i class="fas fa-city"></i>
-                    </div>
-                    <div>
-                        <h1>TRƯỜNG THPT Kiến Trúc</h1>
-                        <p>Cổng thông tin Tuyển sinh</p>
-                    </div>
-                </a>
-            </div>
-            
-            <nav class="navbar navbar-expand-lg navbar-light p-0 main-nav">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-3">
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Admission" asp-action="Index">Thông tin TS</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Application" asp-action="Register">Đăng ký hồ sơ</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Result" asp-action="Search">Tra cứu KQ</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">Tin tức</a></li>
-                    </ul>
-                    
-                    <form class="d-flex me-3" asp-controller="Result" asp-action="Search" method="get">
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-0"><i class="fas fa-search text-muted"></i></span>
-                            <input class="form-control search-box" type="search" name="code" placeholder="Tìm kiếm..." aria-label="Search">
+    <!-- Header NTTHNUE Style -->
+    <header>
+        <div class="header-main">
+            <div class="container d-flex align-items-center justify-content-between py-2">
+                <div class="d-flex align-items-center">
+                    <a href="/" class="text-decoration-none d-flex align-items-center">
+                        <img src="/images/logo.png" alt="Logo" onerror="this.outerHTML='<div class=\'logo-box me-3\'><i class=\'fas fa-city\'></i></div>'" style="max-height: 70px; margin-right: 15px;" />
+                        <div>
+                            <p class="header-sub-text">SỞ GIÁO DỤC VÀ ĐÀO TẠO</p>
+                            <h2 class="header-brand-text">TRƯỜNG THPT KIẾN TRÚC</h2>
                         </div>
-                    </form>
-
+                    </a>
+                </div>
+                
+                <div class="d-none d-lg-block">
                     <partial name="_LoginPartial" />
                 </div>
-            </nav>
+                <button class="navbar-toggler d-lg-none border-0 fs-2 text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="header-bottom shadow-sm">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                    <div class="collapse navbar-collapse" id="mainMenu">
+                        <ul class="navbar-nav w-100">
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home me-1"></i> TRANG CHỦ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">GIỚI THIỆU</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Admission" asp-action="Index">THÔNG TIN TUYỂN SINH</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Application" asp-action="Register">ĐĂNG KÝ HỒ SƠ</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Result" asp-action="Search">TRA CỨU KẾT QUẢ</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">TIN TỨC</a></li>
+                            <li class="nav-item d-lg-none mt-2 border-top pt-2">
+                                <partial name="_LoginPartial" />
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -75,17 +77,15 @@
         </main>
     </div>
 
-    <footer class="py-5 mt-5">
+    <footer class="py-5 mt-5" style="background-color: var(--secondary-blue); color: white; border-top: 5px solid var(--primary-blue);">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="d-flex align-items-center mb-3 text-white">
-                        <div class="logo-box border-white text-white me-3" style="width: 40px; height: 40px; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                            <i class="fas fa-city"></i>
-                        </div>
+                        <img src="/images/logo.png" alt="Logo" onerror="this.outerHTML='<div class=\'logo-box border-white text-white me-3\' style=\'width: 40px; height: 40px; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;\'><i class=\'fas fa-city\'></i></div>'" style="max-height: 50px; margin-right: 15px;" />
                         <div>
                             <h5 class="mb-0 fw-bold">TRƯỜNG THPT KIẾN TRÚC</h5>
-                            <small>Cổng thông tin Tuyển sinh trực tuyến</small>
+                            <small>Sở Giáo dục và Đào tạo</small>
                         </div>
                     </div>
                     <p class="small text-white-50"><i class="fas fa-map-marker-alt me-2"></i> Số 123 Đường Kiến Trúc, Quận ABC, TP. Hà Nội</p>
@@ -95,10 +95,10 @@
                 <div class="col-md-4 mb-4">
                     <h6 class="text-white fw-bold mb-3">LIÊN KẾT NHANH</h6>
                     <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="#"><i class="fas fa-angle-right me-2"></i> Hướng dẫn đăng ký</a></li>
-                        <li class="mb-2"><a href="#"><i class="fas fa-angle-right me-2"></i> Tra cứu điểm thi</a></li>
-                        <li class="mb-2"><a href="#"><i class="fas fa-angle-right me-2"></i> Câu hỏi thường gặp (FAQ)</a></li>
-                        <li class="mb-2"><a href="#"><i class="fas fa-angle-right me-2"></i> Tải biểu mẫu</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Hướng dẫn đăng ký</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Tra cứu điểm thi</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Câu hỏi thường gặp (FAQ)</a></li>
+                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Tải biểu mẫu</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -106,12 +106,12 @@
                     <p class="small text-white-50">Nhận thông báo mới nhất về kỳ thi tuyển sinh.</p>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control rounded-0" placeholder="Email của bạn">
-                        <button class="btn btn-primary rounded-0" type="button">Đăng ký</button>
+                        <button class="btn btn-primary rounded-0 border-0" style="background-color: var(--primary-blue);" type="button">Đăng ký</button>
                     </div>
                 </div>
             </div>
             <div class="border-top border-secondary pt-3 mt-3 text-center small text-white-50">
-                &copy; 2026 Bản quyền thuộc về Trường THPT Kiến Trúc. Phát triển bởi Đội Tuyển sinh.
+                &copy; 2026 Bản quyền thuộc về Trường THPT Kiến Trúc.
             </div>
         </div>
     </footer>

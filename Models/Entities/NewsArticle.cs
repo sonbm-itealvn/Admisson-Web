@@ -17,16 +17,16 @@ namespace AdmissionWeb.Models.Entities
         public string Content { get; set; }
         
         [Display(Name = "Tác giả")]
-        public string Author { get; set; }
+        public string? Author { get; set; }
         
         [Display(Name = "Ngày đăng")]
         public DateTime PublishedAt { get; set; }
         
         [Display(Name = "Danh mục")]
-        public string Category { get; set; }
+        public string? Category { get; set; }
         
         [Display(Name = "Hình ảnh")]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
         
         [Display(Name = "Công khai")]
         public bool IsPublished { get; set; }

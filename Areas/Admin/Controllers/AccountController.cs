@@ -26,6 +26,9 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         
         public string PhoneNumber { get; set; }
         
+        [Required(ErrorMessage = "Địa chỉ là bắt buộc")]
+        public string Address { get; set; }
+        
         [Required(ErrorMessage = "Vai trò là bắt buộc")]
         public string RoleName { get; set; }
     }
@@ -38,6 +41,9 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         public string FullName { get; set; }
         
         public string PhoneNumber { get; set; }
+        
+        [Required(ErrorMessage = "Địa chỉ là bắt buộc")]
+        public string Address { get; set; }
         
         public bool EmailConfirmed { get; set; }
     }
@@ -82,6 +88,7 @@ namespace AdmissionWeb.Areas.Admin.Controllers
                     Email = model.Email,
                     FullName = model.FullName,
                     PhoneNumber = model.PhoneNumber,
+                    Address = model.Address,
                     CreatedAt = DateTime.UtcNow
                 };
 
@@ -116,6 +123,7 @@ namespace AdmissionWeb.Areas.Admin.Controllers
                 Id = user.Id,
                 FullName = user.FullName,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 EmailConfirmed = user.EmailConfirmed
             };
             return View(model);
@@ -134,6 +142,7 @@ namespace AdmissionWeb.Areas.Admin.Controllers
 
                 user.FullName = model.FullName;
                 user.PhoneNumber = model.PhoneNumber;
+                user.Address = model.Address;
                 user.EmailConfirmed = model.EmailConfirmed;
 
                 var result = await _userManager.UpdateAsync(user);

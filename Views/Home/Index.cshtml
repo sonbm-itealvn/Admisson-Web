@@ -3,190 +3,171 @@
     ViewData["Title"] = "Tuyển sinh lớp 10";
 }
 
-<!-- Hero Section -->
-<div class="row align-items-center mb-5 mt-3">
-    <div class="col-lg-6 mb-4 mb-lg-0">
-        <div class="pe-lg-4">
-            <span class="badge bg-light text-primary border border-primary p-2 px-3 mb-3" style="font-weight: 700; text-transform: uppercase;">
-                <i class="fas fa-bullseye me-2"></i> Tuyển sinh lớp 10 • Năm học @(DateTime.Now.Year)-@(DateTime.Now.Year+1)
-            </span>
-            <h1 class="display-4 fw-bold text-dark mb-4" style="line-height: 1.2;">
-                Khởi đầu hành trình tại <span class="text-primary-blue">Trường THPT Kiến Trúc</span>
-            </h1>
-            <p class="lead text-muted mb-4" style="font-size: 1.1rem; line-height: 1.6;">
-                Cổng thông tin tuyển sinh trực tuyến — đăng ký hồ sơ, tra cứu kết quả và cập nhật lịch thi nhanh chóng, minh bạch.
-            </p>
-            
-            <div class="d-flex flex-wrap gap-3 mb-5">
-                <a asp-controller="Application" asp-action="Register" class="btn btn-primary-sharp px-4 py-3">
-                    <i class="fas fa-file-signature me-2"></i> Đăng ký hồ sơ
-                </a>
-                <a asp-controller="Result" asp-action="Search" class="btn btn-outline-primary px-4 py-3" style="border-radius: 0; font-weight: 700; text-transform: uppercase;">
-                    <i class="fas fa-search me-2"></i> Tra cứu kết quả
-                </a>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-6 col-sm-3">
-                    <div class="stat-box">
-                        <h3>480</h3>
-                        <p>Chỉ tiêu</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-3">
-                    <div class="stat-box">
-                        <h3>12</h3>
-                        <p>Lớp chuyên</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-3">
-                    <div class="stat-box">
-                        <h3>1.250+</h3>
-                        <p>Hồ sơ nộp</p>
-                    </div>
-                </div>
-                <div class="col-6 col-sm-3">
-                    <div class="stat-box">
-                        <h3>95%</h3>
-                        <p>Tỷ lệ đỗ ĐH</p>
-                    </div>
-                </div>
-            </div>
+<!-- Welcome Section -->
+<section class="welcome-text my-3">
+    <div class="container bg-light py-2 px-3 border-start border-4" style="border-color: var(--primary-blue) !important; border-radius: 4px;">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-bell text-primary me-3 fs-5"></i>
+            <marquee behavior="scroll" direction="left" scrollamount="5" class="mb-0 fw-bold text-dark" style="font-size: 1.1rem;">
+                Chào mừng bạn đã đến với Cổng thông tin Tuyển sinh Trường THPT Kiến Trúc - Nơi khởi nguồn đam mê và sáng tạo!
+            </marquee>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="hero-box">
-            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Học sinh THPT" class="img-fluid w-100" style="object-fit: cover; height: 450px;" />
-            <div class="bg-white p-3 border position-absolute shadow-sm d-flex align-items-center" style="bottom: 10px; left: 10px; right: 10px;">
-                <div class="icon-hexagon me-3 mb-0" style="width: 30px; height: 30px;">
-                    <i class="fas fa-box-open fa-sm"></i>
-                </div>
-                <div>
-                    <h6 class="mb-0 fw-bold">Học sinh lớp 9</h6>
-                    <small class="text-muted">Đăng ký trực tuyến — Miễn phí</small>
+</section>
+
+<!-- Top Articles Grid -->
+<section class="top_articles mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="grid_3tin">
+                    @{
+                        var topNews = Model.LatestNews.Take(3).ToList();
+                        for (int i = 0; i < topNews.Count; i++)
+                        {
+                            var news = topNews[i];
+                            var colClass = i == 0 ? "grid_3tin_col" : (i == 1 ? "grid_3tin_col2" : "grid_3tin_col3");
+                            var imgUrl = string.IsNullOrEmpty(news.ImageUrl) ? "/images/default-news.png" : news.ImageUrl;
+                            
+                            <div class="@colClass shadow-sm">
+                                <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" title="@news.Title">
+                                    <img src="@imgUrl" onerror="this.src='/images/default-news.png'" alt="@news.Title">
+                                </a>
+                                <div class="news-grid__overlay">
+                                    <div class="mb-2 small text-white-50"><i class="far fa-clock me-2"></i><span>@news.PublishedAt.ToString("dd/MM/yyyy")</span></div>
+                                    <h3 class="news-grid__title">
+                                        <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" title="@news.Title">@news.Title</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        }
+                        
+                        // Fill empty slots if less than 3 news
+                        for(int i = topNews.Count; i < 3; i++) {
+                            var colClass = i == 0 ? "grid_3tin_col" : (i == 1 ? "grid_3tin_col2" : "grid_3tin_col3");
+                            <div class="@colClass bg-secondary d-flex align-items-center justify-content-center shadow-sm">
+                                <i class="fas fa-image fa-3x text-white-50"></i>
+                                <div class="news-grid__overlay">
+                                    <h3 class="news-grid__title text-white-50">Đang cập nhật tin tức...</h3>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Services Section -->
-<div class="mb-5 mt-5 pt-4">
-    <h3 class="section-title mb-2">DỊCH VỤ TUYỂN SINH</h3>
-    <p class="text-muted mb-4">Truy cập nhanh các chức năng chính của hệ thống</p>
-    
-    <div class="row g-4">
-        <div class="col-md-6 col-lg-4">
-            <a asp-controller="Application" asp-action="Register" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-file-alt"></i></div>
-                    <h5>ĐĂNG KÝ HỒ SƠ</h5>
-                    <p>Nộp hồ sơ tuyển sinh trực tuyến</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <a asp-controller="Result" asp-action="Search" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-search"></i></div>
-                    <h5>TRA CỨU KẾT QUẢ</h5>
-                    <p>Xem điểm thi & danh sách trúng tuyển</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <a asp-controller="Admission" asp-action="Index" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-info-circle"></i></div>
-                    <h5>THÔNG TIN TUYỂN SINH</h5>
-                    <p>Chỉ tiêu, điều kiện, hồ sơ cần thiết</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <a href="#" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-calendar-alt"></i></div>
-                    <h5>LỊCH THI & SỰ KIỆN</h5>
-                    <p>Ngày thi, địa điểm, lịch công tác</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <a href="#" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-download"></i></div>
-                    <h5>TẢI BIỂU MẪU</h5>
-                    <p>Đơn đăng ký, cam kết, hướng dẫn</p>
-                </div>
-            </a>
-        </div>
-        <div class="col-md-6 col-lg-4">
-            <a href="#" class="text-decoration-none">
-                <div class="service-card">
-                    <div class="icon-hexagon"><i class="fas fa-question-circle"></i></div>
-                    <h5>CÂU HỎI THƯỜNG GẶP</h5>
-                    <p>Giải đáp thắc mắc tuyển sinh</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- News and Notices -->
-<div class="row mb-5 pt-4">
-    <div class="col-md-6 mb-4">
-        <h3 class="section-title mb-4">THÔNG BÁO TUYỂN SINH</h3>
-        @if (Model.ActivePeriods.Any())
-        {
-            foreach (var period in Model.ActivePeriods)
-            {
-                <div class="d-flex border-bottom pb-3 mb-3 align-items-start">
-                    <div class="bg-light border border-primary text-center p-2 me-3" style="min-width: 60px;">
-                        <span class="d-block fw-bold text-primary fs-4">@period.EndDate.Day</span>
-                        <span class="d-block text-muted small">Tháng @period.EndDate.Month</span>
-                    </div>
-                    <div>
-                        <h6 class="fw-bold mb-1">
-                            <a asp-controller="Admission" asp-action="Detail" asp-route-id="@period.Id" class="text-dark text-decoration-none hover-primary">@period.Name</a>
-                        </h6>
-                        <p class="text-muted small mb-2"><i class="fas fa-clock me-1"></i> Hạn cuối nộp hồ sơ</p>
-                        <a asp-controller="Application" asp-action="Register" asp-route-periodId="@period.Id" class="small fw-bold text-decoration-none text-primary-blue">
-                            ĐĂNG KÝ NGAY <i class="fas fa-arrow-right ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <p class="text-muted"><i class="fas fa-info-circle me-1"></i> Hiện chưa có thông báo tuyển sinh mới.</p>
-        }
-    </div>
-    
-    <div class="col-md-6 mb-4">
-        <h3 class="section-title mb-4">TIN TỨC NỔI BẬT</h3>
-        @foreach (var news in Model.LatestNews.Take(3))
-        {
-            <div class="d-flex mb-3 align-items-center">
-                @if (!string.IsNullOrEmpty(news.ImageUrl))
+<!-- Featured Events Slider (Static Grid Alternative) -->
+<section class="homesection mb-5">
+    <div class="container">
+        <div class="inner" style="background-color: var(--secondary-blue); border-radius: 8px;">
+            <h2 class="text-uppercase text-white fw-bold text-center p-3 mb-0" style="font-size: 1.5rem;">SỰ KIỆN NỔI BẬT</h2>
+            <div class="row px-4 pb-4 g-4">
+                @foreach (var news in Model.LatestNews.Skip(1).Take(4))
                 {
-                    <img src="@news.ImageUrl" alt="@news.Title" class="me-3 border" style="width: 80px; height: 80px; object-fit: cover;" />
+                    <div class="col-6 col-md-3">
+                        <div class="d-block w-100">
+                            <div class="boximage2p3 mb-2 rounded overflow-hidden box_shadow2 border border-2 border-white" style="aspect-ratio: 4/3;">
+                                <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id">
+                                    <img class="w-100 h-100 object-fit-cover" src="@(string.IsNullOrEmpty(news.ImageUrl) ? "/images/default-news.png" : news.ImageUrl)" alt="@news.Title">
+                                </a>
+                            </div>
+                            <h3 class="py-2 text-center" style="font-size: 0.95rem; line-height: 1.4;">
+                                <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="text-white text-decoration-none hover-primary fw-bold">@news.Title</a>
+                            </h3>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Admission and News Lists -->
+<section class="mb-5">
+    <div class="container">
+        <div class="row">
+            <!-- Cột trái: Tuyển sinh -->
+            <div class="col-md-6 mb-4">
+                <h3 class="section-title mb-4 border-bottom pb-2" style="color: var(--primary-blue);">THÔNG BÁO TUYỂN SINH</h3>
+                
+                @if (Model.ActivePeriods.Any())
+                {
+                    foreach (var period in Model.ActivePeriods)
+                    {
+                        <div class="d-flex border-bottom pb-3 mb-3 align-items-start">
+                            <div class="date-box me-3">
+                                <span class="day">@period.EndDate.Day</span>
+                                <span class="month">Tháng @period.EndDate.Month</span>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1" style="font-size: 1.1rem; line-height: 1.4;">
+                                    <a asp-controller="Admission" asp-action="Detail" asp-route-id="@period.Id" class="text-dark text-decoration-none hover-primary">@period.Name</a>
+                                </h6>
+                                <p class="text-muted small mb-2"><i class="far fa-clock me-1"></i> Hạn cuối nộp hồ sơ: @period.EndDate.ToString("dd/MM/yyyy")</p>
+                                <a asp-controller="Application" asp-action="Register" asp-route-periodId="@period.Id" class="small fw-bold text-decoration-none" style="color: var(--primary-blue);">
+                                    ĐĂNG KÝ NGAY <i class="fas fa-angle-double-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
                 }
                 else
                 {
-                    <div class="me-3 border d-flex align-items-center justify-content-center bg-light" style="width: 80px; height: 80px;">
-                        <i class="fas fa-newspaper text-muted fa-2x"></i>
+                    <div class="alert alert-light border text-center">
+                        <i class="fas fa-info-circle text-muted mb-2 fs-3"></i>
+                        <p class="mb-0 text-muted">Hiện chưa có thông báo tuyển sinh mới.</p>
                     </div>
                 }
-                <div>
-                    <span class="badge bg-light text-secondary border mb-1">@news.Category</span>
-                    <h6 class="fw-bold mb-1" style="line-height: 1.4;">
-                        <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="text-dark text-decoration-none">@news.Title</a>
-                    </h6>
-                    <small class="text-muted"><i class="fas fa-calendar-alt me-1"></i> @news.PublishedAt.ToString("dd/MM/yyyy")</small>
-                </div>
             </div>
-        }
+            
+            <!-- Cột phải: Tin tức chung -->
+            <div class="col-md-6 mb-4">
+                <h3 class="section-title mb-4 border-bottom pb-2" style="color: var(--primary-blue);">TIN TỨC CHUNG</h3>
+                
+                @foreach (var news in Model.LatestNews.Skip(3).Take(4))
+                {
+                    <div class="d-flex mb-3 align-items-center bg-white p-2 rounded shadow-sm border">
+                        <div class="me-3 rounded overflow-hidden" style="width: 100px; height: 75px; flex-shrink: 0;">
+                            @if (!string.IsNullOrEmpty(news.ImageUrl))
+                            {
+                                <img src="@news.ImageUrl" alt="@news.Title" class="w-100 h-100 object-fit-cover" />
+                            }
+                            else
+                            {
+                                <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light text-muted border">
+                                    <i class="fas fa-image fa-2x"></i>
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <span class="badge mb-1" style="background-color: var(--light-blue); color: var(--primary-blue);">@news.Category</span>
+                            <h6 class="fw-bold mb-1" style="line-height: 1.4; font-size: 0.95rem;">
+                                <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="text-dark text-decoration-none hover-primary">@news.Title</a>
+                            </h6>
+                            <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> @news.PublishedAt.ToString("dd/MM/yyyy")</small>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<!-- Action Buttons -->
+<section class="mb-5 pb-4">
+    <div class="container text-center">
+        <hr class="mb-5 opacity-25">
+        <h3 class="mb-4 fw-bold text-dark">TRUY CẬP NHANH CÁC DỊCH VỤ</h3>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a asp-controller="Application" asp-action="Register" class="btn btn-lg text-white" style="background-color: var(--primary-blue); border-radius: 30px; padding: 12px 30px;">
+                <i class="fas fa-file-signature me-2"></i> Đăng ký hồ sơ trực tuyến
+            </a>
+            <a asp-controller="Result" asp-action="Search" class="btn btn-lg btn-outline-primary" style="border-color: var(--primary-blue); color: var(--primary-blue); border-radius: 30px; padding: 12px 30px; border-width: 2px;">
+                <i class="fas fa-search me-2"></i> Tra cứu kết quả thi
+            </a>
+        </div>
+    </div>
+</section>
