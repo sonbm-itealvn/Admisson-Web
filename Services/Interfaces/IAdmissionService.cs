@@ -10,6 +10,8 @@ namespace AdmissionWeb.Services.Interfaces
         Task<AdmissionPeriod> GetPeriodByIdAsync(int id);
         Task<IEnumerable<ProgramOption>> GetProgramOptionsAsync();
         Task<IEnumerable<NewsArticle>> GetLatestNewsAsync(int count);
+        Task<IEnumerable<NewsArticle>> GetNewsByCategoryAsync(string category, int count);
         Task<NewsArticle> GetNewsByIdAsync(int id);
+        Task<IEnumerable<Banner>> GetActiveBannersAsync();
     }
 }

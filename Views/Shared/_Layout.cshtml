@@ -13,8 +13,8 @@
     <div class="top-bar py-2 d-none d-lg-block">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex">
-                <a asp-controller="Application" asp-action="Register">Đăng ký hồ sơ</a>
-                <a asp-controller="Result" asp-action="Search">Tra cứu kết quả</a>
+                <a asp-controller="Application" asp-action="Register" class="d-none">Đăng ký hồ sơ</a>
+                <a asp-controller="Result" asp-action="Search" class="d-none">Tra cứu kết quả</a>
                 <a href="#">Tải biểu mẫu</a>
                 <a href="#">FAQ</a>
                 <a asp-controller="Contact" asp-action="Index">Liên hệ</a>
@@ -58,8 +58,8 @@
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home me-1"></i> TRANG CHỦ</a></li>
                             <li class="nav-item"><a class="nav-link" href="#">GIỚI THIỆU</a></li>
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Admission" asp-action="Index">THÔNG TIN TUYỂN SINH</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Application" asp-action="Register">ĐĂNG KÝ HỒ SƠ</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Result" asp-action="Search">TRA CỨU KẾT QUẢ</a></li>
+                            <li class="nav-item d-none"><a class="nav-link" asp-area="" asp-controller="Application" asp-action="Register">ĐĂNG KÝ HỒ SƠ</a></li>
+                            <li class="nav-item d-none"><a class="nav-link" asp-area="" asp-controller="Result" asp-action="Search">TRA CỨU KẾT QUẢ</a></li>
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">TIN TỨC</a></li>
                             <li class="nav-item d-lg-none mt-2 border-top pt-2">
                                 <partial name="_LoginPartial" />
@@ -71,48 +71,21 @@
         </div>
     </header>
 
+    <div class="bg-warning text-dark py-2 text-center shadow-sm">
+        <marquee behavior="scroll" direction="left" scrollamount="6" class="fw-bold mb-0" style="font-size: 1.1rem;">
+            <i class="fas fa-tools me-2"></i> Website đang trong quá trình phát triển và cập nhật
+        </marquee>
+    </div>
+
     <div class="container mt-4 mb-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="py-5 mt-5" style="background-color: var(--secondary-blue); color: white; border-top: 5px solid var(--primary-blue);">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="d-flex align-items-center mb-3 text-white">
-                        <img src="/images/logo.png" alt="Logo" onerror="this.outerHTML='<div class=\'logo-box border-white text-white me-3\' style=\'width: 40px; height: 40px; border: 2px solid white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;\'><i class=\'fas fa-city\'></i></div>'" style="max-height: 50px; margin-right: 15px;" />
-                        <div>
-                            <h5 class="mb-0 fw-bold">TRƯỜNG THPT KIẾN TRÚC</h5>
-                            <small>Sở Giáo dục và Đào tạo</small>
-                        </div>
-                    </div>
-                    <p class="small text-white-50"><i class="fas fa-map-marker-alt me-2"></i> Số 123 Đường Kiến Trúc, Quận ABC, TP. Hà Nội</p>
-                    <p class="small text-white-50"><i class="fas fa-phone me-2"></i> (024) 1234 5678</p>
-                    <p class="small text-white-50"><i class="fas fa-envelope me-2"></i> tuyensinh@thptkientruc.edu.vn</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-white fw-bold mb-3">LIÊN KẾT NHANH</h6>
-                    <ul class="list-unstyled small">
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Hướng dẫn đăng ký</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Tra cứu điểm thi</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Câu hỏi thường gặp (FAQ)</a></li>
-                        <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none"><i class="fas fa-angle-right me-2"></i> Tải biểu mẫu</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-white fw-bold mb-3">ĐĂNG KÝ NHẬN TIN</h6>
-                    <p class="small text-white-50">Nhận thông báo mới nhất về kỳ thi tuyển sinh.</p>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control rounded-0" placeholder="Email của bạn">
-                        <button class="btn btn-primary rounded-0 border-0" style="background-color: var(--primary-blue);" type="button">Đăng ký</button>
-                    </div>
-                </div>
-            </div>
-            <div class="border-top border-secondary pt-3 mt-3 text-center small text-white-50">
-                &copy; 2026 Bản quyền thuộc về Trường THPT Kiến Trúc.
-            </div>
+    <footer class="mt-5 border-top border-bottom border-dark" style="background-color: #02519A; border-width: 2px !important; overflow: hidden; padding: 0;">
+        <div class="mx-auto" style="max-width: 1400px; display: block; overflow: hidden;">
+            <img src="/images/footer.png" alt="Footer" style="width: 100%; height: auto; display: block;" onerror="this.outerHTML='<div class=\'text-white text-center p-4\'>Vui lòng tải ảnh footer của bạn vào thư mục <strong>wwwroot/images/footer.png</strong> để hiển thị.</div>'" />
         </div>
     </footer>
 

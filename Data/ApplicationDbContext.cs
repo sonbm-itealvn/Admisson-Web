@@ -19,7 +19,9 @@ namespace AdmissionWeb.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<ExamResult> ExamResults { get; set; }
         public DbSet<NewsArticle> NewsArticles { get; set; }
+        public DbSet<NewsCategory> NewsCategories { get; set; }
         public DbSet<ContactRequest> ContactRequests { get; set; }
+        public DbSet<Banner> Banners { get; set; }
 
         public override int SaveChanges()
         {
@@ -55,7 +57,9 @@ namespace AdmissionWeb.Data
             builder.Entity<Application>().HasQueryFilter(e => !e.IsDeleted);
             builder.Entity<ExamResult>().HasQueryFilter(e => !e.IsDeleted);
             builder.Entity<NewsArticle>().HasQueryFilter(e => !e.IsDeleted);
+            builder.Entity<NewsCategory>().HasQueryFilter(e => !e.IsDeleted);
             builder.Entity<ContactRequest>().HasQueryFilter(e => !e.IsDeleted);
+            builder.Entity<Banner>().HasQueryFilter(e => !e.IsDeleted);
 
             builder.Entity<Application>()
                 .HasOne(a => a.AdmissionPeriod)

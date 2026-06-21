@@ -32,8 +32,9 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Categories = await _context.NewsCategories.ToListAsync();
             return View();
         }
 
@@ -83,6 +84,8 @@ namespace AdmissionWeb.Areas.Admin.Controllers
             if (id == null) return NotFound();
             var article = await _context.NewsArticles.FindAsync(id);
             if (article == null) return NotFound();
+            
+            ViewBag.Categories = await _context.NewsCategories.ToListAsync();
             return View(article);
         }
 

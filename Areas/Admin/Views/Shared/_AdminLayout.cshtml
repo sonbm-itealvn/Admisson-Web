@@ -99,8 +99,18 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">
-                    <i class="fas fa-newspaper"></i> Quản lý tin tức
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "News" ? "active" : "")" asp-area="Admin" asp-controller="News" asp-action="Index">
+                    <i class="fas fa-newspaper me-2"></i> Quản lý Tin tức
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "NewsCategory" ? "active" : "")" asp-area="Admin" asp-controller="NewsCategory" asp-action="Index">
+                    <i class="fas fa-tags me-2"></i> Quản lý Danh mục
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Banner" ? "active" : "")">
+                    <i class="fas fa-images"></i> Quản lý Banner
                 </a>
             </li>
             <li class="nav-item">

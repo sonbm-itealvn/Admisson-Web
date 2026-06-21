@@ -42,5 +42,78 @@
                 </a>
             </div>
         </article>
-    </div>
 </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            function getTextNodes(node) {
+                var textNodes = [];
+                if (node.nodeType === 3) {
+                    var text = node.nodeValue.trim();
+                    if (text.length > 0) {
+                        textNodes.push(node);
+                    }
+                } else {
+                    var children = node.childNodes;
+                    for (var i = 0; i < children.length; i++) {
+                        textNodes.push.apply(textNodes, getTextNodes(children[i]));
+                    }
+                }
+                return textNodes;
+            }
+
+            var contentNode = $('.card-text')[0];
+            if (!contentNode) return;
+
+            var textNodes = getTextNodes(contentNode);
+            var urlRegex = /(https?:\/\/[^\s]+)/g;
+            var processed = false;
+
+            for (var i = textNodes.length - 1; i >= 0; i--) {
+                var node = textNodes[i];
+                var $closestA = $(node).closest('a');
+                
+                if ($closestA.length > 0) {
+                    if (!processed) {
+                        $closestA.addClass('btn btn-primary mt-4 mb-2 shadow-sm rounded-pill px-4 py-2 fw-bold d-inline-block');
+                        $closestA.css('background-color', '#02519A');
+                        $closestA.attr('target', '_blank');
+                        $closestA.html('Xem thêm tại đây <i class="fas fa-external-link-alt ms-2"></i>');
+                        
+                        var $parentP = $closestA.closest('p, div');
+                        if ($parentP.length > 0 && $parentP[0] !== contentNode) {
+                            $parentP.addClass('text-center');
+                        } else {
+                            $closestA.wrap('<div class="text-center"></div>');
+                        }
+                        processed = true;
+                    }
+                    continue; 
+                }
+
+                var text = node.nodeValue;
+                var match = text.match(urlRegex);
+                if (match && !processed) {
+                    var lastUrl = match[match.length - 1];
+                    var newHtml = text.replace(lastUrl, '<a href="' + lastUrl + '" target="_blank" class="btn btn-primary mt-4 mb-2 shadow-sm rounded-pill px-4 py-2 fw-bold d-inline-block" style="background-color: #02519A;">Xem thêm tại đây <i class="fas fa-external-link-alt ms-2"></i></a>');
+                    
+                    var $wrapper = $('<span>').html(newHtml);
+                    $(node).replaceWith($wrapper);
+
+                    var $parentP = $wrapper.closest('p, div');
+                    if ($parentP.length > 0 && $parentP[0] !== contentNode) {
+                        $parentP.addClass('text-center');
+                    } else {
+                        $wrapper.wrap('<div class="text-center"></div>');
+                    }
+                    
+                    processed = true;
+                }
+                
+                if (processed) break;
+            }
+        });
+    </script>
+}

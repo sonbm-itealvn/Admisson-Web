@@ -17,6 +17,31 @@ namespace AdmissionWeb.Data.SeedData
 
             context.Database.EnsureCreated();
 
+            // Create NewsCategories table if missing (due to migration sync issues)
+            try
+            {
+                Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.ExecuteSqlRaw(context.Database, @"
+                    CREATE TABLE IF NOT EXISTS `NewsCategories` (
+                        `Id` int NOT NULL AUTO_INCREMENT,
+                        `IsDeleted` tinyint(1) NOT NULL DEFAULT 0,
+                        `Name` longtext CHARACTER SET utf8mb4 NOT NULL,
+                        `Description` longtext CHARACTER SET utf8mb4 NULL,
+                        CONSTRAINT `PK_NewsCategories` PRIMARY KEY (`Id`)
+                    ) CHARACTER SET=utf8mb4;");
+            }
+            catch { }
+
+            // Seed Categories
+            if (!context.NewsCategories.Any())
+            {
+                context.NewsCategories.AddRange(
+                    new NewsCategory { Name = "Sự kiện nổi bật", Description = "Các sự kiện, tin tức nổi bật quan trọng" },
+                    new NewsCategory { Name = "Thông báo tuyển sinh", Description = "Thông báo liên quan đến kỳ tuyển sinh" },
+                    new NewsCategory { Name = "Tin tức chung", Description = "Tin tức hoạt động chung của trường" }
+                );
+                await context.SaveChangesAsync();
+            }
+
             // Seed Roles
             string[] roleNames = { "Admin", "AdmissionOfficer", "Candidate" };
             foreach (var roleName in roleNames)

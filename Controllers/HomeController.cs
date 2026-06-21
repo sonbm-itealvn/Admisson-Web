@@ -20,7 +20,11 @@ public class HomeController : Controller
         var model = new HomeViewModel
         {
             ActivePeriods = await _admissionService.GetActivePeriodsAsync(),
-            LatestNews = await _admissionService.GetLatestNewsAsync(3)
+            LatestNews = await _admissionService.GetLatestNewsAsync(3),
+            Banners = await _admissionService.GetActiveBannersAsync(),
+            FeaturedEvents = await _admissionService.GetNewsByCategoryAsync("Sự kiện nổi bật", 4),
+            AdmissionNews = await _admissionService.GetNewsByCategoryAsync("Thông báo tuyển sinh", 4),
+            GeneralNews = await _admissionService.GetNewsByCategoryAsync("Tin tức chung", 4)
         };
         return View(model);
     }

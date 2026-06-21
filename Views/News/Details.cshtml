@@ -9,50 +9,146 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none">Tin tức</a></li>
-                    <li class="breadcrumb-item active" aria-current="page" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@Model.Title</li>
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted"><i class="fas fa-home"></i> Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none text-muted">Tin tức</a></li>
+                    <li class="breadcrumb-item active text-primary fw-bold" aria-current="page" style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@Model.Title</li>
                 </ol>
             </nav>
 
-            <div class="bg-white p-4 p-md-5 rounded shadow-sm border-0">
-                <div class="mb-4 pb-3 border-bottom">
-                    <span class="badge bg-primary-sharp px-3 py-2 mb-3">@Model.Category</span>
-                    <h1 class="fw-bold mb-3" style="line-height: 1.4;">@Model.Title</h1>
-                    <div class="d-flex align-items-center text-muted small">
-                        <div class="me-4"><i class="fas fa-calendar-alt me-2 text-primary"></i> @Model.PublishedAt.ToString("dd/MM/yyyy HH:mm")</div>
-                        @if (!string.IsNullOrEmpty(Model.Author))
-                        {
-                            <div><i class="fas fa-user-edit me-2 text-primary"></i> Đăng bởi: <span class="fw-bold">@Model.Author</span></div>
-                        }
+            <article class="bg-white p-4 p-md-5 rounded-4 shadow-sm border-0" style="border-top: 5px solid #02519A !important;">
+                <header class="mb-4 pb-4 border-bottom">
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge px-3 py-2 me-3" style="background-color: #F57E20; color: white; font-size: 0.9rem;">@Model.Category</span>
+                        <div class="text-muted small">
+                            <i class="far fa-clock me-1"></i> @Model.PublishedAt.ToString("dd/MM/yyyy HH:mm")
+                        </div>
                     </div>
-                </div>
+                    <h1 class="fw-bold mb-3" style="color: #02519A; line-height: 1.4;">@Model.Title</h1>
+                    @if (!string.IsNullOrEmpty(Model.Author))
+                    {
+                        <div class="d-flex align-items-center text-muted">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                <i class="fas fa-user text-primary"></i>
+                            </div>
+                            <span>Tác giả: <strong class="text-dark">@Model.Author</strong></span>
+                        </div>
+                    }
+                </header>
 
-                <div class="article-content" style="font-size: 1.1rem; line-height: 1.8;">
+                <div class="article-content" style="font-size: 1.1rem; line-height: 1.8; color: #333;">
                     @Html.Raw(Model.Content)
                 </div>
 
-                <div class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
-                    <a asp-action="Index" class="btn btn-outline-secondary">
+                <footer class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">
                         <i class="fas fa-arrow-left me-2"></i> Trở về danh sách
                     </a>
                     
                     <div class="d-flex align-items-center">
                         <span class="me-3 fw-bold text-muted">Chia sẻ:</span>
-                        <a href="#" class="btn btn-sm btn-outline-primary rounded-circle me-2" style="width: 35px; height: 35px; padding: 5px;"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-info rounded-circle" style="width: 35px; height: 35px; padding: 5px;"><i class="fab fa-twitter"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;"><i class="fab fa-facebook-f"></i></a>
+                        <a href="javascript:void(0)" class="btn btn-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i class="fab fa-twitter"></i></a>
                     </div>
-                </div>
-            </div>
+                </footer>
+            </article>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            function getTextNodes(node) {
+                var textNodes = [];
+                if (node.nodeType === 3) {
+                    var text = node.nodeValue.trim();
+                    if (text.length > 0) {
+                        textNodes.push(node);
+                    }
+                } else {
+                    var children = node.childNodes;
+                    for (var i = 0; i < children.length; i++) {
+                        textNodes.push.apply(textNodes, getTextNodes(children[i]));
+                    }
+                }
+                return textNodes;
+            }
+
+            var contentNode = $('.article-content')[0];
+            if (!contentNode) return;
+
+            var textNodes = getTextNodes(contentNode);
+            var urlRegex = /(https?:\/\/[^\s]+)/g;
+            var processed = false;
+
+            for (var i = textNodes.length - 1; i >= 0; i--) {
+                var node = textNodes[i];
+                var $closestA = $(node).closest('a');
+                
+                // Nếu nó đã nằm trong thẻ <a>
+                if ($closestA.length > 0) {
+                    if (!processed) {
+                        $closestA.addClass('btn btn-primary mt-4 mb-2 shadow-sm rounded-pill px-4 py-2 fw-bold d-inline-block');
+                        $closestA.css('background-color', '#02519A');
+                        $closestA.attr('target', '_blank');
+                        $closestA.html('Xem thêm tại đây <i class="fas fa-external-link-alt ms-2"></i>');
+                        
+                        var $parentP = $closestA.closest('p, div');
+                        if ($parentP.length > 0 && $parentP[0] !== contentNode) {
+                            $parentP.addClass('text-center');
+                        } else {
+                            $closestA.wrap('<div class="text-center"></div>');
+                        }
+                        processed = true;
+                    }
+                    continue; // Skip the rest of this text node, we already styled its parent A
+                }
+
+                // Nếu nó là plain text url
+                var text = node.nodeValue;
+                var match = text.match(urlRegex);
+                if (match && !processed) {
+                    var lastUrl = match[match.length - 1];
+                    var newHtml = text.replace(lastUrl, '<a href="' + lastUrl + '" target="_blank" class="btn btn-primary mt-4 mb-2 shadow-sm rounded-pill px-4 py-2 fw-bold d-inline-block" style="background-color: #02519A;">Xem thêm tại đây <i class="fas fa-external-link-alt ms-2"></i></a>');
+                    
+                    var $wrapper = $('<span>').html(newHtml);
+                    $(node).replaceWith($wrapper);
+
+                    var $parentP = $wrapper.closest('p, div');
+                    if ($parentP.length > 0 && $parentP[0] !== contentNode) {
+                        $parentP.addClass('text-center');
+                    } else {
+                        $wrapper.wrap('<div class="text-center"></div>');
+                    }
+                    
+                    processed = true;
+                }
+                
+                if (processed) break;
+            }
+        });
+    </script>
+}
 
 <style>
     .article-content img {
         max-width: 100%;
         height: auto;
         border-radius: 8px;
-        margin: 20px 0;
+        margin: 25px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .article-content a:not(.btn) {
+        color: #02519A;
+        text-decoration: none;
+        font-weight: 600;
+        border-bottom: 1px dashed #02519A;
+    }
+    .article-content a:not(.btn):hover {
+        color: #F57E20;
+        border-bottom-color: #F57E20;
+    }
+    .article-content p {
+        margin-bottom: 1.5rem;
     }
 </style>

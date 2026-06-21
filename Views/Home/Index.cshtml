@@ -15,6 +15,59 @@
     </div>
 </section>
 
+<!-- Banners Slider -->
+@if (Model.Banners != null && Model.Banners.Any())
+{
+    <section class="banner-slider mb-4">
+        <div class="container">
+            <div id="homeBannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-indicators">
+                    @{
+                        int slideIndex = 0;
+                        foreach (var banner in Model.Banners)
+                        {
+                            <button type="button" data-bs-target="#homeBannerCarousel" data-bs-slide-to="@slideIndex" class="@(slideIndex == 0 ? "active" : "")" aria-current="@(slideIndex == 0 ? "true" : "false")" aria-label="Slide @(slideIndex + 1)"></button>
+                            slideIndex++;
+                        }
+                    }
+                </div>
+                <div class="carousel-inner shadow-sm" style="border-radius: 8px; overflow: hidden; max-height: 500px; aspect-ratio: 21/9; background-color: #f8f9fa;">
+                    @{
+                        bool isFirst = true;
+                        foreach (var banner in Model.Banners)
+                        {
+                            <div class="carousel-item @(isFirst ? "active" : "") h-100">
+                                @if (!string.IsNullOrEmpty(banner.LinkUrl))
+                                {
+                                    <a href="@banner.LinkUrl" class="d-block h-100">
+                                        <img src="@banner.ImageUrl" class="d-block w-100 h-100" alt="@banner.Title" style="object-fit: cover;">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <img src="@banner.ImageUrl" class="d-block w-100 h-100" alt="@banner.Title" style="object-fit: cover;">
+                                }
+                            </div>
+                            isFirst = false;
+                        }
+                    }
+                </div>
+                @if (Model.Banners.Count() > 1)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div>
+        </div>
+    </section>
+}
+
 <!-- Top Articles Grid -->
 <section class="top_articles mb-5">
     <div class="container">
@@ -65,7 +118,7 @@
         <div class="inner" style="background-color: var(--secondary-blue); border-radius: 8px;">
             <h2 class="text-uppercase text-white fw-bold text-center p-3 mb-0" style="font-size: 1.5rem;">SỰ KIỆN NỔI BẬT</h2>
             <div class="row px-4 pb-4 g-4">
-                @foreach (var news in Model.LatestNews.Skip(1).Take(4))
+                @foreach (var news in Model.FeaturedEvents)
                 {
                     <div class="col-6 col-md-3">
                         <div class="d-block w-100">
@@ -93,22 +146,22 @@
             <div class="col-md-6 mb-4">
                 <h3 class="section-title mb-4 border-bottom pb-2" style="color: var(--primary-blue);">THÔNG BÁO TUYỂN SINH</h3>
                 
-                @if (Model.ActivePeriods.Any())
+                @if (Model.AdmissionNews != null && Model.AdmissionNews.Any())
                 {
-                    foreach (var period in Model.ActivePeriods)
+                    foreach (var news in Model.AdmissionNews)
                     {
                         <div class="d-flex border-bottom pb-3 mb-3 align-items-start">
                             <div class="date-box me-3">
-                                <span class="day">@period.EndDate.Day</span>
-                                <span class="month">Tháng @period.EndDate.Month</span>
+                                <span class="day">@news.PublishedAt.Day</span>
+                                <span class="month">Tháng @news.PublishedAt.Month</span>
                             </div>
                             <div>
                                 <h6 class="fw-bold mb-1" style="font-size: 1.1rem; line-height: 1.4;">
-                                    <a asp-controller="Admission" asp-action="Detail" asp-route-id="@period.Id" class="text-dark text-decoration-none hover-primary">@period.Name</a>
+                                    <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="text-dark text-decoration-none hover-primary">@news.Title</a>
                                 </h6>
-                                <p class="text-muted small mb-2"><i class="far fa-clock me-1"></i> Hạn cuối nộp hồ sơ: @period.EndDate.ToString("dd/MM/yyyy")</p>
-                                <a asp-controller="Application" asp-action="Register" asp-route-periodId="@period.Id" class="small fw-bold text-decoration-none" style="color: var(--primary-blue);">
-                                    ĐĂNG KÝ NGAY <i class="fas fa-angle-double-right ms-1"></i>
+                                <p class="text-muted small mb-2"><i class="far fa-clock me-1"></i> Đăng ngày: @news.PublishedAt.ToString("dd/MM/yyyy")</p>
+                                <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="small fw-bold text-decoration-none" style="color: var(--primary-blue);">
+                                    XEM CHI TIẾT <i class="fas fa-angle-double-right ms-1"></i>
                                 </a>
                             </div>
                         </div>
@@ -127,7 +180,7 @@
             <div class="col-md-6 mb-4">
                 <h3 class="section-title mb-4 border-bottom pb-2" style="color: var(--primary-blue);">TIN TỨC CHUNG</h3>
                 
-                @foreach (var news in Model.LatestNews.Skip(3).Take(4))
+                @foreach (var news in Model.GeneralNews)
                 {
                     <div class="d-flex mb-3 align-items-center bg-white p-2 rounded shadow-sm border">
                         <div class="me-3 rounded overflow-hidden" style="width: 100px; height: 75px; flex-shrink: 0;">

@@ -7,6 +7,10 @@ namespace AdmissionWeb.Models.ViewModels
     {
         public IEnumerable<AdmissionPeriod> ActivePeriods { get; set; }
         public IEnumerable<NewsArticle> LatestNews { get; set; }
+        public IEnumerable<Banner> Banners { get; set; }
+        public IEnumerable<NewsArticle> FeaturedEvents { get; set; }
+        public IEnumerable<NewsArticle> AdmissionNews { get; set; }
+        public IEnumerable<NewsArticle> GeneralNews { get; set; }
     }
 
     public class AdmissionDetailViewModel

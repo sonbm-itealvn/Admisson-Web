@@ -259,7 +259,7 @@ footer a:hover { color: white; }
     text-transform: uppercase;
 }
 .header-sub-text {
-    color: var(--primary-blue);
+    color: var(--secondary-blue);
     font-weight: 600;
     font-size: 0.9rem;
     text-transform: uppercase;

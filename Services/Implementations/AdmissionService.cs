@@ -44,9 +44,26 @@ namespace AdmissionWeb.Services.Implementations
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<NewsArticle>> GetNewsByCategoryAsync(string category, int count)
+        {
+            return await _context.NewsArticles
+                .Where(a => a.IsPublished && a.Category == category)
+                .OrderByDescending(a => a.PublishedAt)
+                .Take(count)
+                .ToListAsync();
+        }
+
         public async Task<NewsArticle> GetNewsByIdAsync(int id)
         {
             return await _context.NewsArticles.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Banner>> GetActiveBannersAsync()
+        {
+            return await _context.Banners
+                .Where(b => b.IsActive)
+                .OrderBy(b => b.DisplayOrder)
+                .ToListAsync();
         }
     }
 }
