@@ -107,8 +107,15 @@
                                     Sở Giáo dục và Đào tạo Hà Nội &nbsp;&nbsp; Trường Đại học Kiến trúc Hà Nội
                                 </div>
                                 <div class="header-main-title">
-                                    TRƯỜNG TRUNG HỌC PHỔ THÔNG KIẾN TRÚC
+                                    TRƯỜNG TRUNG HỌC PHỔ THÔNG <span style="white-space: nowrap;">KIẾN TRÚC</span>
                                 </div>
+                            </div>
+
+                            <!-- Mobile Menu Toggle (Moved up) -->
+                            <div class="d-lg-none d-flex align-items-center pe-3">
+                                <button class="btn text-white" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-expanded="false" style="border: 1px solid rgba(255,255,255,0.4); padding: 4px 10px; border-radius: 4px;">
+                                    <i class="fas fa-bars" style="font-size: 1.4rem;"></i>
+                                </button>
                             </div>
 
                         </div>
@@ -116,12 +123,9 @@
             </div>
         </div>
         
-        <div class="header-bottom shadow-sm">
-            <div class="container">
+        <div class="header-bottom header-bottom-mobile-fix">
+            <div class="container px-0 px-lg-2">
                 <nav class="navbar navbar-expand-lg navbar-dark p-0">
-                    <button class="navbar-toggler my-2 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
                     <div class="collapse navbar-collapse" id="mainMenu">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home me-1"></i> TRANG CHỦ</a></li>
@@ -130,7 +134,7 @@
                             <li class="nav-item d-none"><a class="nav-link" asp-area="" asp-controller="Application" asp-action="Register">ĐĂNG KÝ HỒ SƠ</a></li>
                             <li class="nav-item d-none"><a class="nav-link" asp-area="" asp-controller="Result" asp-action="Search">TRA CỨU KẾT QUẢ</a></li>
                             <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="News" asp-action="Index">TIN TỨC</a></li>
-                            <li class="nav-item d-lg-none mt-2 border-top pt-2">
+                            <li class="nav-item d-lg-none mt-2 border-top pt-2 px-3 pb-3">
                                 <partial name="_LoginPartial" />
                             </li>
                         </ul>
@@ -142,6 +146,15 @@
             </div>
         </div>
         <style>
+            @@media (max-width: 991.98px) {
+                .header-bottom-mobile-fix {
+                    position: absolute;
+                    width: 100%;
+                    z-index: 1050;
+                    background-color: #005bb5;
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+                }
+            }
             @@media (min-width: 992px) {
                 .login-nav-block .nav-link,
                 .login-nav-block .text-dark {
