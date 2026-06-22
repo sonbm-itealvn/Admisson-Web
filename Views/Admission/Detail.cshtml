@@ -84,17 +84,4 @@
     </div>
 </div>
 
-<div class="text-center mt-4">
-    @if (Model.Period.IsActive && Model.Period.EndDate >= DateTime.Now)
-    {
-        <a asp-controller="Application" asp-action="Register" asp-route-periodId="@Model.Period.Id" class="btn btn-success btn-lg px-5">
-            <i class="fas fa-paper-plane"></i> Đăng ký hồ sơ trực tuyến ngay
-        </a>
-    }
-    else
-    {
-        <div class="alert alert-warning d-inline-block">
-            <i class="fas fa-exclamation-triangle"></i> Kỳ tuyển sinh này đã kết thúc nhận hồ sơ.
-        </div>
-    }
-</div>
+
