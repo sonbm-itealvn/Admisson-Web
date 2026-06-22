@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 using AdmissionWeb.Data;
 using AdmissionWeb.Models.Entities;
 using AdmissionWeb.Services.Interfaces;
@@ -7,6 +8,12 @@ using AdmissionWeb.Services.Implementations;
 using AdmissionWeb.Data.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Cấu hình Forwarded Headers cho proxy (Nginx/Apache/IIS)
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=localhost;Port=3306;Database=AdmissionWebDb;User=root;Password=your_password;";
@@ -49,6 +56,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+app.UseForwardedHeaders();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
