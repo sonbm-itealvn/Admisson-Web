@@ -372,3 +372,144 @@ footer a:hover { color: white; }
 .hover-primary:hover {
     color: var(--primary-blue) !important;
 }
+
+/* ==========================================================================
+   MOBILE & TABLET OPTIMIZATIONS (Max-Width: 991.98px)
+   ZERO REGRESSION POLICY: Desktop styles (>= 992px) remain untouched.
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+    /* 1. Prevent Horizontal Scrolling */
+    body, html {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+    }
+    .geometric-bg {
+        overflow-x: hidden;
+    }
+
+    /* 2. Touch Targets & Typography */
+    button, .btn, .nav-link, .dropdown-item {
+        min-height: 44px; /* Apple HIG standard */
+        display: flex;
+        align-items: center;
+    }
+    
+    input, select, textarea, .form-control, .form-select {
+        min-height: 48px;
+        font-size: 16px !important; /* Prevents iOS auto-zoom */
+    }
+
+    /* 3. Mobile Navigation Layout */
+    .navbar-toggler {
+        padding: 10px 15px;
+        margin-right: 0 !important;
+    }
+    .navbar-collapse {
+        background-color: var(--bg-white);
+        padding: 1rem;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        border: 1px solid var(--border-blue);
+    }
+    .main-nav .nav-link {
+        padding: 12px 15px !important;
+        border-bottom: 1px solid var(--border-blue);
+        color: var(--text-dark) !important;
+        white-space: normal;
+    }
+    .main-nav .nav-item:last-child .nav-link {
+        border-bottom: none;
+    }
+    .header-bottom .nav-link {
+        color: var(--text-dark) !important;
+    }
+
+    /* 4. Utilities & Overrides for smaller screens */
+    .section-title {
+        font-size: 1.2rem;
+    }
+    .stat-box {
+        padding: 1.5rem 0;
+        margin-bottom: 1rem;
+    }
+
+    /* Header text adjustments for tablet */
+    .header-sub-text {
+        font-size: 0.8rem;
+    }
+    .header-brand-text {
+        font-size: 1.2rem;
+    }
+    
+    /* Global table wrapper for responsive scroll */
+    table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Phones Only (Max-Width: 767.98px) */
+@media (max-width: 767.98px) {
+    /* 5. Optimize Cards and Grids */
+    .service-card {
+        padding: 1rem;
+        margin-bottom: 15px;
+    }
+    .hero-box {
+        padding: 1rem;
+    }
+    
+    /* Top Articles Grid Override - Show Full Image */
+    .grid_3tin {
+        grid-template-rows: auto auto auto !important;
+        gap: 15px;
+        height: auto !important;
+    }
+    .grid_3tin_col, .grid_3tin_col2, .grid_3tin_col3 {
+        background-color: #f8f9fa; /* Background in case of transparent images */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .grid_3tin img {
+        height: auto !important;
+        max-height: 400px; /* Prevent extremely tall images from taking over the screen */
+        object-fit: contain !important;
+    }
+    .grid_3tin_col .news-grid__title {
+        font-size: 1.1rem;
+    }
+    
+    /* Featured Events - col-6 overrides */
+    .boximage2p3 {
+        aspect-ratio: 1/1 !important; /* Square looks better on very tight columns */
+    }
+    
+    .date-box {
+        min-width: 55px;
+        padding: 3px;
+    }
+    .date-box .day {
+        font-size: 1.2rem;
+    }
+
+    /* Hide Banner Carousel Indicators on Mobile */
+    .carousel-indicators {
+        display: none !important;
+    }
+}
+
+/* Small Phones Only (Max-Width: 575.98px) */
+@media (max-width: 575.98px) {
+    .navbar-brand h1 {
+        font-size: 1rem;
+    }
+    .navbar-brand p {
+        font-size: 0.7rem;
+    }
+}

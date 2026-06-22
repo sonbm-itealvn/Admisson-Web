@@ -117,7 +117,8 @@
     <div class="container">
         <div class="inner" style="background-color: var(--secondary-blue); border-radius: 8px;">
             <h2 class="text-uppercase text-white fw-bold text-center p-3 mb-0" style="font-size: 1.5rem;">SỰ KIỆN NỔI BẬT</h2>
-            <div class="row px-4 pb-4 g-4">
+            <!-- Desktop Grid (Hidden on Mobile) -->
+            <div class="row px-4 pb-4 g-4 d-none d-md-flex">
                 @foreach (var news in Model.FeaturedEvents)
                 {
                     <div class="col-6 col-md-3">
@@ -133,6 +134,44 @@
                         </div>
                     </div>
                 }
+            </div>
+
+            <!-- Mobile Carousel (Hidden on Desktop) -->
+            <div class="d-block d-md-none px-4 pb-4">
+                <div id="mobileEventsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-inner">
+                        @{
+                            bool isFirstEvent = true;
+                            foreach (var news in Model.FeaturedEvents)
+                            {
+                                <div class="carousel-item @(isFirstEvent ? "active" : "")">
+                                    <div class="d-block w-100 px-3">
+                                        <div class="boximage2p3 mb-2 rounded overflow-hidden box_shadow2 border border-2 border-white" style="aspect-ratio: 4/3;">
+                                            <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id">
+                                                <img class="w-100 h-100 object-fit-cover" src="@(string.IsNullOrEmpty(news.ImageUrl) ? "/images/default-news.png" : news.ImageUrl)" alt="@news.Title">
+                                            </a>
+                                        </div>
+                                        <h3 class="py-2 text-center" style="font-size: 1.1rem; line-height: 1.4;">
+                                            <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="text-white text-decoration-none hover-primary fw-bold">@news.Title</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                                isFirstEvent = false;
+                            }
+                        }
+                    </div>
+                    @if (Model.FeaturedEvents.Count() > 1)
+                    {
+                        <button class="carousel-control-prev" type="button" data-bs-target="#mobileEventsCarousel" data-bs-slide="prev" style="width: 10%;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.3); border-radius: 50%; padding: 15px;"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#mobileEventsCarousel" data-bs-slide="next" style="width: 10%;">
+                            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: rgba(0,0,0,0.3); border-radius: 50%; padding: 15px;"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    }
+                </div>
             </div>
         </div>
     </div>
