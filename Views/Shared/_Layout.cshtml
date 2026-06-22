@@ -34,16 +34,60 @@
                         </div>
                         
                         <!-- Text -->
-                        <div class="flex-grow-1 ps-lg-5 ps-3 py-2 d-none d-md-flex flex-column justify-content-center text-white" style="margin-left: 60px;">
-                            <div style="font-family: 'Times New Roman', Times, serif; font-size: 1.25rem; margin-bottom: -2px;">
-                                Sở Giáo dục và Đào tạo Hà Nội &nbsp;&nbsp;&nbsp;&nbsp; Trường Đại học Kiến trúc Hà Nội
+                        <style>
+                            .header-text-container {
+                                margin-left: 10px;
+                            }
+                            .header-sub {
+                                font-family: 'Times New Roman', Times, serif; 
+                                font-size: 0.65rem; 
+                                margin-bottom: 2px;
+                            }
+                            .header-main-title {
+                                font-family: Arial, Helvetica, sans-serif; 
+                                font-size: 0.85rem; 
+                                font-weight: bold; 
+                                letter-spacing: 0px;
+                            }
+                            @media (min-width: 768px) {
+                                .header-text-container {
+                                    margin-left: 40px;
+                                }
+                                .header-sub {
+                                    font-size: 1rem;
+                                }
+                                .header-main-title {
+                                    font-size: 1.3rem;
+                                }
+                            }
+                            @media (min-width: 992px) {
+                                .header-text-container {
+                                    margin-left: 60px;
+                                }
+                                .header-sub {
+                                    font-size: 1.25rem;
+                                    margin-bottom: -2px;
+                                }
+                                .header-main-title {
+                                    font-size: 1.7rem;
+                                }
+                            }
+                            @media (max-width: 576px) {
+                                .header-logo-container {
+                                    width: 100px !important;
+                                }
+                                .header-logo-container img {
+                                    max-height: 50px !important;
+                                }
+                            }
+                        </style>
+                        <div class="flex-grow-1 ps-lg-5 ps-2 py-2 d-flex flex-column justify-content-center text-white header-text-container">
+                            <div class="header-sub">
+                                Sở Giáo dục và Đào tạo Hà Nội &nbsp;&nbsp;&nbsp; Trường Đại học Kiến trúc Hà Nội
                             </div>
-                            <div style="font-family: Arial, Helvetica, sans-serif; font-size: 1.7rem; font-weight: bold; letter-spacing: 0px;">
+                            <div class="header-main-title">
                                 TRƯỜNG TRUNG HỌC PHỔ THÔNG KIẾN TRÚC
                             </div>
-                        </div>
-                        <div class="flex-grow-1 ps-3 py-2 d-md-none text-white">
-                            <h5 class="fw-bold mb-0">Trường THPT Kiến Trúc</h5>
                         </div>
 
                     </div>
