@@ -249,24 +249,24 @@ footer a:hover { color: white; }
 }
 /* Header NTTHNUE Style */
 .header-main {
-    background-color: var(--bg-white);
+    background-color: #005bb5 !important;
     padding: 15px 0;
 }
 .header-brand-text {
-    color: var(--secondary-blue);
+    color: var(--bg-white);
     font-weight: 800;
     margin: 0;
     text-transform: uppercase;
 }
 .header-sub-text {
-    color: var(--secondary-blue);
+    color: rgba(255,255,255,0.8);
     font-weight: 600;
     font-size: 0.9rem;
     text-transform: uppercase;
     margin: 0;
 }
 .header-bottom {
-    background-color: var(--primary-blue);
+    background-color: #005bb5 !important;
 }
 .header-bottom .nav-link {
     color: var(--bg-white) !important;
@@ -276,7 +276,7 @@ footer a:hover { color: white; }
     transition: background-color 0.2s;
 }
 .header-bottom .nav-link:hover, .header-bottom .nav-link.active {
-    background-color: var(--secondary-blue);
+    background-color: rgba(255,255,255,0.1) !important;
 }
 
 /* News Grid Top */
