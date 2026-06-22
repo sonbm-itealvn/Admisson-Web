@@ -50,31 +50,44 @@ namespace AdmissionWeb.Areas.Admin.Controllers
             {
                 article.Author ??= "Quản trị viên";
                 article.Category ??= "Thông báo chung";
-                if (ImageUpload != null)
+                try
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "news");
-                    if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
-                    
-                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + ImageUpload.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    if (ImageUpload != null)
                     {
-                        await ImageUpload.CopyToAsync(fileStream);
+                        var webRootPath = _webHostEnvironment.WebRootPath;
+                        if (string.IsNullOrWhiteSpace(webRootPath))
+                        {
+                            webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                        }
+                        string uploadsFolder = Path.Combine(webRootPath, "images", "news");
+                        if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+                        
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + ImageUpload.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await ImageUpload.CopyToAsync(fileStream);
+                        }
+                        article.ImageUrl = "/images/news/" + uniqueFileName;
                     }
-                    article.ImageUrl = "/images/news/" + uniqueFileName;
-                }
-                else
-                {
-                    // Default image if none provided
-                    if (string.IsNullOrEmpty(article.ImageUrl))
-                        article.ImageUrl = "/images/default-news.png";
-                }
+                    else
+                    {
+                        // Default image if none provided
+                        if (string.IsNullOrEmpty(article.ImageUrl))
+                            article.ImageUrl = "/images/default-news.png";
+                    }
 
-                article.PublishedAt = System.DateTime.Now;
-                _context.Add(article);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    article.PublishedAt = System.DateTime.Now;
+                    _context.Add(article);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi khi lưu bài viết hoặc hình ảnh: " + ex.Message);
+                }
             }
+            ViewBag.Categories = await _context.NewsCategories.ToListAsync();
             return View(article);
         }
 

@@ -36,23 +36,40 @@ namespace AdmissionWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (imageFile != null && imageFile.Length > 0)
+                try
                 {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
-                    var filePath = Path.Combine(_env.WebRootPath, "images", "banners", fileName);
-                    
-                    Directory.CreateDirectory(Path.Combine(_env.WebRootPath, "images", "banners"));
-                    
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    if (imageFile != null && imageFile.Length > 0)
                     {
-                        await imageFile.CopyToAsync(stream);
-                    }
-                    banner.ImageUrl = "/images/banners/" + fileName;
-                }
+                        var webRootPath = _env.WebRootPath;
+                        if (string.IsNullOrWhiteSpace(webRootPath))
+                        {
+                            webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                        }
 
-                _context.Add(banner);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                        var folderPath = Path.Combine(webRootPath, "images", "banners");
+                        var filePath = Path.Combine(folderPath, fileName);
+                        
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+                        
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+                        banner.ImageUrl = "/images/banners/" + fileName;
+                    }
+
+                    _context.Add(banner);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Lỗi khi lưu dữ liệu hoặc file: " + ex.Message);
+                }
             }
             return View(banner);
         }
