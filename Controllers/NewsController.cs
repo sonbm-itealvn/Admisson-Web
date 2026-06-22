@@ -28,6 +28,14 @@ namespace AdmissionWeb.Controllers
         {
             var article = await _context.NewsArticles.FindAsync(id);
             if (article == null || !article.IsPublished) return NotFound();
+
+            // Lấy 3 tin tức mới nhất (trừ bài hiện tại) để hiển thị ở cột bên phải
+            ViewBag.LatestNews = await _context.NewsArticles
+                .Where(n => n.IsPublished && n.Id != id)
+                .OrderByDescending(n => n.PublishedAt)
+                .Take(3)
+                .ToListAsync();
+
             return View(article);
         }
     }
